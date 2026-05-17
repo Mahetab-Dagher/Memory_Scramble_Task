@@ -9,10 +9,15 @@ import java.util.Scanner;
 public class Board {
 	int row, col;
 	ArrayList<String> board = new ArrayList<>();
+	
 	String symbols[] = {"📻", "🎃", "🎄", "⌚", "💡", "👑", "👾", "🎻", "💎", "🧴️", "🧁", "🍰", "🚗", "🚀"};
+	
 	String blank = "❇️";
+	
+	ArrayList<String> faceDown = new ArrayList<>();
+	
 	private Random rand = new Random();
-   
+    
     public String getRandSymbol(int len){
         return symbols[rand.nextInt(len)];
     }
@@ -35,6 +40,7 @@ public class Board {
 		
 		for(int i=0; i<row; i++) {
 			for(int j=0; j<col; j++) {
+				faceDown.add(blank);
 				String symbol = getRandSymbol(numOfSymbols);
 				while(true) {
 					if(!taken.containsKey(symbol)) {
@@ -68,10 +74,25 @@ public class Board {
 	void displayFaceDown() {
 		for(int i=0; i<row; i++) {
 			for(int j=0; j<col; j++) {
-				System.out.print(blank);
+				System.out.print(faceDown.get(i*col + j));
 			}
 			System.out.println();
 		}
+	}
+	
+	String getCard(int r, int c) {
+		return board.get((r-1)*col + (c-1));
+	}
+	
+	void updateFaceDown(int r, int c, String symbol) {
+		faceDown.set((r-1)*col + (c-1), symbol);
+	}
+	String getFromFaceDown(int r, int c) {
+		return faceDown.get((r-1)*col + (c-1));
+	}
+	
+	boolean isComplete() {
+		return faceDown.contains("❇️")?false:true;
 	}
 
 }
